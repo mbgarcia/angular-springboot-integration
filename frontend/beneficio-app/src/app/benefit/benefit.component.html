@@ -1,0 +1,18 @@
+<section>
+<h2 class="section-heading">New benefit account</h2>
+<form [formGroup]="benefitForm" (submit)="submitBenefit()">
+    <label for="name">Name:</label>
+    <input id="name" type="text" formControlName="name" required>
+
+    <label for="description">description:</label>
+    <input id="description" type="text" formControlName="description" required>
+
+    <label for="balance">Account Balance:</label>
+    <input id="balance" type="text" formControlName="balance" required>
+
+    <label for="active">Active:</label>
+    <input id="active" type="checkbox" formControlName="active" required>
+
+    <button class="primary" type="submit">Include this accout</button>
+</form>
+</section>

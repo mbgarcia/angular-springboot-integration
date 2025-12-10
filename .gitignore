@@ -2,3 +2,14 @@ backend-module/.idea/
 backend-module/target/
 ejb-module/.idea/
 ejb-module/target/
+*/environment.ts
+frontend/beneficio-app/src/environments/environment.ts
+frontend/beneficio-app/.vscode/
+frontend/beneficio-app/.editorconfig
+frontend/beneficio-app/.vscode/extensions.json
+frontend/beneficio-app/.vscode/launch.json
+frontend/beneficio-app/.vscode/tasks.json
+frontend/beneficio-app/README.md
+frontend/beneficio-app/src/assets/.gitkeep
+*Zone.Identifier
+
