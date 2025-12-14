@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,9 +16,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 })
 export class AppComponent {
   title = 'app';
-  sidebarOpened = true;
+  private sidebarOpened = signal(true);
 
   toggleSidebar() {
-    this.sidebarOpened = !this.sidebarOpened;
+    this.sidebarOpened.set(this.sidebarOpened() ? false : true);
+  }
+
+  sidebarOpened$() {
+    return this.sidebarOpened;
   }
 }

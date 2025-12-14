@@ -3,12 +3,12 @@ import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HomeComponent, RouterModule, MatToolbarModule, MatIconModule],
+  imports: [HomeComponent, RouterModule, MatToolbarModule, MatIconModule, MatSidenavModule],
   templateUrl: './app.component.html',
   // template: `
   //   <main>

@@ -12,7 +12,7 @@
   </button>
 </mat-toolbar>
 <mat-drawer-container class="content-container">
-  <mat-drawer mode="side" [opened]="sidebarOpened" class="sidebar">
+  <mat-drawer mode="side" [opened]="sidebarOpened$()" class="sidebar">
     <p>Drawer content</p>
   </mat-drawer>
   <mat-drawer-content class="main-content">
