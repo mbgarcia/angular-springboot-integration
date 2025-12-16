@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -15,10 +15,9 @@ import { MatListModule } from '@angular/material/list';
 export class AppComponent {
   title = 'app';
 
-  sidebarOpened = true;
+  sidebarOpened = signal(true);
 
   toggleSidebar() {
-    this.sidebarOpened = !this.sidebarOpened;
+    this.sidebarOpened.set(!this.sidebarOpened());
   }
-
 }

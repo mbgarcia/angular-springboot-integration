@@ -1,1 +1,61 @@
-<p>dashboard works!</p>
+<mat-card>
+    <mat-card-header>
+        <h2>Dashboard</h2>
+    </mat-card-header>
+    <mat-card-content>
+        <p>Here you can add widgets, charts, and other relevant information for quick access.</p>
+        <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let item"> {{item.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef> Nome </th>
+            <td mat-cell *matCellDef="let item"> {{item.nome}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="descricao">
+            <th mat-header-cell *matHeaderCellDef> Descrição </th>
+            <td mat-cell *matCellDef="let item"> {{item.descricao}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="valor">
+            <th mat-header-cell *matHeaderCellDef> Valor </th>
+            <td mat-cell *matCellDef="let item"> {{item.valor}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ativo">
+            <th mat-header-cell *matHeaderCellDef> Ativo </th>
+            <td mat-cell *matCellDef="let item">
+                <div *ngIf="item.ativo; else inactive">
+                    <span>Sim</span>
+                </div>
+                <ng-template #inactive>
+                    <span>Não</span>
+                </ng-template>
+            </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Ações </th>
+            <td mat-cell *matCellDef="let item">
+                <button mat-button color="primary" [routerLink]="['/benefit-crud', item.id]">Edit</button>
+                <button mat-button color="warn" [routerLink]="['/delete', item.id]">Delete</button>
+            </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSize]="pageSize" 
+            [length]="totalItems" 
+            [pageIndex]="currentPage" 
+            [pageSizeOptions]="[5, 10, 20]"
+            (page)="onPageChange($event)">
+
+        </mat-paginator>
+
+    </mat-card-content>
+</mat-card>

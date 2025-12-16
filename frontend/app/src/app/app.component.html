@@ -12,7 +12,7 @@
   </button>
 </mat-toolbar>
 <mat-sidenav-container class="mat-sidenav-container">
-  <mat-sidenav #sidenav mode="side" [opened]="sidebarOpened" class="sidebar">
+  <mat-sidenav #sidenav mode="side" [opened]="sidebarOpened()" class="sidebar">
     <mat-nav-list>
       <mat-list-item routerLink="/dashboard" routerLinkActive="active">Dashboard</mat-list-item>
       <mat-list-item routerLink="/benefits" routerLinkActive="active">Benefits</mat-list-item>
@@ -21,6 +21,5 @@
   </mat-sidenav>
 
   <mat-sidenav-content class="main-content">
-    Main content
     <router-outlet></router-outlet>
 </mat-sidenav-content>    

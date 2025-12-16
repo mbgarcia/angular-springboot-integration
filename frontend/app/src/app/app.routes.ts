@@ -7,5 +7,6 @@ export const routes: Routes = [
     {path: '', component: DashboardComponent},
     {path: 'dashboard', component: DashboardComponent},
     {path: 'benefit-crud', component: BenefitCrudComponent},
+    {path: 'benefit-crud/:id', component: BenefitCrudComponent},
     {path: 'benefits', component: BenefitsListComponent},
 ];

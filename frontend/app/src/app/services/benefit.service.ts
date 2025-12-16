@@ -25,19 +25,11 @@ export class BenefitService {
   }
 
   addBenefit(benefit: BenefitAccount) {
-    return this.http.post<BenefitAccount>(`${this.url}/`, benefit)
-      .subscribe(newBenefit => {
-        this.benefitsSignal.update(benefits => [...benefits, newBenefit]);
-      });
+    return this.http.post<BenefitAccount>(`${this.url}/`, benefit);
   }
 
-  updateBenefit(updatedBenefit: BenefitAccount) {
-    return this.http.put<BenefitAccount>(`${this.url}/${updatedBenefit.id}`, updatedBenefit)
-      .subscribe(updatedBenefit => {
-        this.benefitsSignal.update(benefits => 
-          benefits.map(b => b.id === updatedBenefit.id ? updatedBenefit : b)
-        );
-      });
+  updateBenefit(id: Number, updatedBenefit: BenefitAccount) {
+    return this.http.put<BenefitAccount>(`${this.url}/${id}`, updatedBenefit);
   }
 
   deleteBenefit(id: number) {
