@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Stateless
 public class BeneficioEjbService {
@@ -20,6 +21,11 @@ public class BeneficioEjbService {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Transactional
+    public Optional<Beneficio> findById(Long id) {
+        return Optional.of(em.find(Beneficio.class, id, LockModeType.OPTIMISTIC));
+    }
 
     @Transactional
     public void criarOuAtualizar(Beneficio e) {

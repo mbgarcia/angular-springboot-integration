@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BeneficioService {
@@ -45,5 +46,36 @@ public class BeneficioService {
         novo.setValor(to.getValor());
 
         ejbService.criarOuAtualizar(novo);
+    }
+
+    public BeneficioTo findById(Long id) {
+        Optional<Beneficio> optional = ejbService.findById(id);
+
+        BeneficioTo to = new BeneficioTo();
+
+        if (optional.isPresent()) {
+            Beneficio b = optional.get();
+            to.setId(b.getId());
+            to.setAtivo(b.getAtivo());
+            to.setDescricao(b.getDescricao());
+            to.setNome(b.getNome());
+            to.setValor(b.getValor());
+        }
+
+        return to;
+    }
+
+    public void update(Long id, BeneficioTo to) {
+        Optional<Beneficio> optional = ejbService.findById(id);
+
+        if (optional.isPresent()) {
+            Beneficio b = optional.get();
+            b.setNome(to.getNome());
+            b.setDescricao(to.getDescricao());
+            b.setValor(to.getValor());
+            b.setAtivo(to.getAtivo());
+
+            ejbService.criarOuAtualizar(b);
+        }
     }
 }

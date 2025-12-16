@@ -22,15 +22,27 @@ public class BeneficioController {
         return service.allBenefits();
     }
 
+    @GetMapping("/{id}")
+    public BeneficioTo findById(@PathVariable Long id) {
+        return service.findById(id);
+    }
+
     @PostMapping("/transfer/")
     @ResponseStatus(HttpStatus.OK)
     public TransferResultTo transfer(@Valid @RequestBody TransferPayload payload) throws BusinessException {
         return service.transfer(payload);
     }
 
-    @PostMapping("/novo/")
+    @PostMapping("/")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void novo(@Valid @RequestBody BeneficioTo novo) {
+    public void create(@Valid @RequestBody BeneficioTo novo) {
         service.novaConta(novo);
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void update(@PathVariable Long id, @Valid @RequestBody BeneficioTo payload) {
+        service.update(id, payload);
+    }
+
 }
