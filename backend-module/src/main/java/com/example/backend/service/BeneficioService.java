@@ -78,4 +78,15 @@ public class BeneficioService {
             ejbService.criarOuAtualizar(b);
         }
     }
+
+    public void delete(Long id) {
+        Optional<Beneficio> optional = ejbService.findById(id);
+
+        if (optional.isPresent()) {
+            Beneficio b = optional.get();
+            b.setAtivo(Boolean.FALSE);
+
+            ejbService.criarOuAtualizar(b);
+        }
+    }
 }

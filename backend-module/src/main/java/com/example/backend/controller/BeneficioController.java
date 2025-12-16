@@ -45,4 +45,10 @@ public class BeneficioController {
         service.update(id, payload);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
+
 }
