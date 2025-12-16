@@ -11,5 +11,14 @@ frontend/beneficio-app/.vscode/launch.json
 frontend/beneficio-app/.vscode/tasks.json
 frontend/beneficio-app/README.md
 frontend/beneficio-app/src/assets/.gitkeep
+frontend/app/src/environments/environment.ts
+frontend/app/.vscode/
+frontend/app/.editorconfig
+frontend/app/.vscode/extensions.json
+frontend/app/.vscode/launch.json
+frontend/app/.vscode/tasks.json
+frontend/app/README.md
+frontend/app/src/assets/.gitkeep
+
 *Zone.Identifier
 

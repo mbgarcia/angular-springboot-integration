@@ -1,22 +1,26 @@
-:host {
-  --content-padding: 10px;
+.example-spacer {
+  flex: 1 1 auto;
 }
 
-header {
-  display: block;
-  height: 60px;
-  padding: var(--content-padding);
-  box-shadow: 0px 5px 25px var(--shadow-color);
+
+.header-toolbar {
+  background-color: #3f51b5;
+  color: #fff;
+
+  .app-title {
+    padding-left: 20px;
+  }
 }
 
-.content {
-  padding: var(--content-padding);
+.content-container {
+  min-height: 100vh;
+  height: 100%;
+  border: 1px solid #ccc;
 }
 
-.material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
+.sidebar {
+  width: 250px;
+  background-color: #f5f5f5;
+  padding: 10px;
+  height: 100%;
 }
