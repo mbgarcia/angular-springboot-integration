@@ -20,5 +20,6 @@ frontend/app/.vscode/tasks.json
 frontend/app/README.md
 frontend/app/src/assets/.gitkeep
 
+frontend/node_modules/
 *Zone.Identifier
 
