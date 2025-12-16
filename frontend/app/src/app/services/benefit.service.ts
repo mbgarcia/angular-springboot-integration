@@ -33,8 +33,7 @@ export class BenefitService {
   }
 
   deleteBenefit(id: number) {
-    return this.http.delete<void>(`${this.url}/${id}`)
-      .subscribe(() => this.loadBenefits());
+    return this.http.delete<void>(`${this.url}/${id}`);
   }
 
   getBenefitById(id: number) {
