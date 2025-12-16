@@ -2,3 +2,18 @@
 
 html, body, .mat-sidenav-container { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.dialog-title {  
+    align-content: center;
+    padding: 10px;
+    text-align: center
+}
+
+.dialog-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.dialog-actions {
+    padding-right: 20px;
+}

@@ -11,6 +11,9 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { BenefitService } from '../services/benefit.service';
 import { BenefitAccount } from '../models/benefit-account';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -49,7 +52,7 @@ export class DashboardComponent {
 
   benefits = this.benefitService.benefits;
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
     this.benefitService.loadBenefits();
 
     effect(() => {
@@ -64,5 +67,40 @@ export class DashboardComponent {
   onPageChange(event: any) {
     this.dataSource.paginator = this.paginator;
     this.pageSize = event.pageSize;
+  }
+
+  openDeleteDialog(item: any): void {
+    const config = new MatDialogConfig();
+    config.disableClose = true;
+    config.autoFocus = true;
+    config.width = '550px';
+    config.height = '280px';
+    config.data = { nome: item.nome };
+
+    const dialogRef = this.dialog.open(DeleteDialogComponent, config);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Item deletion confirmed for id:', item.id);
+
+        this.benefitService.deleteBenefit(item.id).subscribe({
+          next: () => {
+            this.snackBar.open('Conta inativada com sucesso!', 'Fechar', {
+              duration: 3000,
+              verticalPosition: 'top',
+            });
+          },
+          error: (error) => {
+            console.error('Error inactivating benefit:', error);
+            this.snackBar.open('Erro ao inativar conta.', 'Fechar', {
+              duration: 3000,
+              verticalPosition: 'top',
+            });
+          }
+        });
+
+        item.ativo = false;
+      }
+    });  
   }
 }
