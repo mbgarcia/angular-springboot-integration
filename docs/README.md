@@ -24,22 +24,25 @@ Criar solução completa em camadas (DB, EJB, Backend, Frontend), corrigindo bug
 Pré-requisitos
 Java 17+
 Maven 3.9+
-Node.js 19+ (para frontend)
-npm ou yarn
+Node.js 18+ (para frontend)
+Angular 19+
 
-1. Compilar e Instalar o EJB no repositório
+1. Instalar o EJB no repositório
 cd ejb-module
 mvn clean install
 
-2. Executar Backend
+2. Subir o backend
 cd backend-module
 mvn spring-boot:run
 
-A aplicação estará disponível em: http://localhost:8080
-
-3. Subir o Frontend
+3. Subir o frontend
 cd frontend/app
 npm install
 npm start
-Frontend disponível em: http://localhost:4200
 
+Acessar o frontend em: http://localhost:4200
+
+## A fazer
+. Trabalhar os estilos do front em botões e interações
+. Incluir testes de integração
+. Incluir testes e2e
