@@ -2,21 +2,14 @@
   <button matIconButton (click)="toggleSidebar()" class="example-icon" aria-label="Example icon-button with menu icon">
     <mat-icon>menu</mat-icon>
   </button>
-  <span class="app-title">My App</span>
+  <span class="app-title">Controle de benefícios</span>
   <span class="example-spacer"></span>
-  <button matIconButton class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button matIconButton class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
 </mat-toolbar>
 <mat-sidenav-container class="mat-sidenav-container">
   <mat-sidenav #sidenav mode="side" [opened]="sidebarOpened()" class="sidebar">
     <mat-nav-list>
       <mat-list-item routerLink="/dashboard" routerLinkActive="active">Dashboard</mat-list-item>
-      <mat-list-item routerLink="/benefits" routerLinkActive="active">Benefits</mat-list-item>
-      <mat-list-item routerLink="/benefit-crud" routerLinkActive="active">New Account</mat-list-item>
+      <mat-list-item routerLink="/benefit-crud" routerLinkActive="active">Nova Conta</mat-list-item>
       <mat-list-item routerLink="/transfer" routerLinkActive="active">Transferência</mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
