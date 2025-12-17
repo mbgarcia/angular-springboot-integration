@@ -58,7 +58,6 @@ export class DashboardComponent {
     effect(() => {
       const benefits = this.benefits();
 
-      console.log('Benefits updated:', benefits);
       this.dataSource.data = benefits;
       this.totalItems = benefits.length;
     });
@@ -81,8 +80,6 @@ export class DashboardComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Item deletion confirmed for id:', item.id);
-
         this.benefitService.deleteBenefit(item.id).subscribe({
           next: () => {
             this.snackBar.open('Conta inativada com sucesso!', 'Fechar', {
@@ -91,7 +88,6 @@ export class DashboardComponent {
             });
           },
           error: (error) => {
-            console.error('Error inactivating benefit:', error);
             this.snackBar.open('Erro ao inativar conta.', 'Fechar', {
               duration: 3000,
               verticalPosition: 'top',

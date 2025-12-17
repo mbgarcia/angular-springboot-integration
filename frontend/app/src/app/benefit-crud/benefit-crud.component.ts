@@ -49,8 +49,6 @@ export class BenefitCrudComponent {
 
         effect(() => {
           this.benefitService.getBenefitById(this.benefitId).subscribe(benefit => {
-            console.log('Loaded benefit for editing:', benefit);
-
             this.benefitForm.setValue({
               nome: benefit.nome,
               descricao: benefit.descricao,
@@ -66,8 +64,6 @@ export class BenefitCrudComponent {
   }
 
   async submitBenefit() {
-    console.log('Submitting form with values:', this.benefitForm.value);
-
     if (this.benefitForm.invalid) {
       this.snackBar.open('Por favor, preencha todos os campos obrigatórios corretamente.', 'Fechar', {
         duration: 3000,
