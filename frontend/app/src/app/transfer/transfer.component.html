@@ -1,0 +1,50 @@
+<mat-card>
+    <mat-card-title>
+        <h1 class="page-title">Transferência de saldo entre contas</h1>
+    </mat-card-title>
+    <mat-card-content>
+        <form [formGroup]="transferForm">
+            <div class="form-group">
+                <div class="form-row">
+                    <mat-form-field>
+                    <mat-label>Conta origem</mat-label>
+                    <mat-select formControlName="fromId" required>
+                        @for (account of accounts; track account) {
+                            <mat-option [value]="account.id">{{account.nome}}</mat-option>
+                        }
+                    </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field>
+                    <mat-label>Conta destino</mat-label>
+                    <mat-select formControlName="toId" required>
+                        @for (account of accounts; track account) {
+                            <mat-option [value]="account.id">{{account.nome}}</mat-option>
+                        }
+                    </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field>
+                        <mat-label>Valor</mat-label>
+                        <input matInput formControlName="valor" required>
+                        <mat-error *ngIf="transferForm.get('valor')?.hasError('required')">
+                            Preencha o valor a ser transferido
+                        </mat-error>
+                        <mat-error *ngIf="transferForm.get('valor')?.hasError('min')">
+                            Valor a ser transferido deve ser maior que zero
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button mat-raised-button (click)="submitTransfer()" [disabled]="transferForm.invalid">Transferir valor</button>
+    </mat-card-actions>
+</mat-card>
+<section>

@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { BenefitAccount } from '../models/benefit-account';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { TransferOperation } from '../models/transfer-operation';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,9 @@ export class BenefitService {
 
   getBenefitById(id: number) {
     return this.http.get<BenefitAccount>(`${this.url}/${id}`);
+  }
+
+  transferBetweenAccounts(transfer: TransferOperation) {
+    return this.http.post<void>(`${this.url}/transfer/`, transfer);
   }
 }
