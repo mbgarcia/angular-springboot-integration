@@ -20,15 +20,26 @@ Criar solução completa em camadas (DB, EJB, Backend, Frontend), corrigindo bug
 6. Documentar (Swagger, README)
 7. Submeter via fork + PR
 
-## 🐞 Bug no EJB
-- Transferência não verifica saldo, não usa locking, pode gerar inconsistência
-- Espera-se correção com validações, rollback, locking/optimistic locking
+## Como Executar a Aplicação
+Pré-requisitos
+Java 17+
+Maven 3.9+
+Node.js 19+ (para frontend)
+npm ou yarn
 
-## 📊 Critérios de avaliação
-- Arquitetura em camadas (20%)
-- Correção EJB (20%)
-- CRUD + Transferência (15%)
-- Qualidade de código (10%)
-- Testes (15%)
-- Documentação (10%)
-- Frontend (10%)
+1. Compilar e Instalar o EJB no repositório
+cd ejb-module
+mvn clean install
+
+2. Executar Backend
+cd backend-module
+mvn spring-boot:run
+
+A aplicação estará disponível em: http://localhost:8080
+
+3. Subir o Frontend
+cd frontend/app
+npm install
+npm start
+Frontend disponível em: http://localhost:4200
+
