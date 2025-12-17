@@ -15,9 +15,10 @@ import java.util.Optional;
 
 @Stateless
 public class BeneficioEjbService {
-    private static final String ERROR_CODE_INPUT_DATA = "error.transfer.input";
-    private static final String ERROR_CODE_NEGATIVE_AMOUNT = "error.negative.amount";
-    private static final String ERROR_CODE_INVALID_DESTINATION = "error.invalid.destination";
+    private static final String ERROR_CODE_INPUT_DATA = "Dados obrigatórios inválidos";
+    private static final String ERROR_CODE_AMOUNT_NOT_POSITIVE = "Valor inválido para ser transferido";
+    private static final String ERROR_CODE_INVALID_DESTINATION = "Informe contas diferentes na transação";
+    private static final String ERROR_CODE_AMOUNT_NEGATIVATES_ACCOUNT = "Valor a ser transferido é superior ao saldo";
 
     @PersistenceContext
     private EntityManager em;
@@ -45,7 +46,7 @@ public class BeneficioEjbService {
         }
 
         if (amount.compareTo(BigDecimal.ZERO)<= 0) {
-            throw new InvalidTransferException(ERROR_CODE_NEGATIVE_AMOUNT);
+            throw new InvalidTransferException(ERROR_CODE_AMOUNT_NOT_POSITIVE);
         }
 
         if (fromId.equals(toId)) {
@@ -54,6 +55,10 @@ public class BeneficioEjbService {
 
         Beneficio from = em.find(Beneficio.class, fromId, LockModeType.OPTIMISTIC);
         Beneficio to   = em.find(Beneficio.class, toId, LockModeType.OPTIMISTIC);
+
+        if (from.getValor().compareTo(amount) < 0) {
+            throw new InvalidTransferException(ERROR_CODE_AMOUNT_NEGATIVATES_ACCOUNT);
+        }
 
         // BUG: sem validações, sem locking, pode gerar saldo negativo e lost update
         from.setValor(from.getValor().subtract(amount));

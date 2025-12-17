@@ -3,7 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.exception.BusinessException;
 import com.example.backend.service.BeneficioService;
 import com.example.backend.to.BeneficioTo;
-import com.example.backend.to.TransferPayload;
+import com.example.backend.to.TransferPayloadTo;
 import com.example.backend.to.TransferResultTo;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class BeneficioController {
 
     @PostMapping("/transfer/")
     @ResponseStatus(HttpStatus.OK)
-    public TransferResultTo transfer(@Valid @RequestBody TransferPayload payload) throws BusinessException {
+    public TransferResultTo transfer(@Valid @RequestBody TransferPayloadTo payload) throws BusinessException {
         return service.transfer(payload);
     }
 

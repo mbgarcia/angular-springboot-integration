@@ -42,6 +42,17 @@ public class BeneficioEjbServiceTest {
     }
 
     @Test
+    public void amountSuperiorBalanceTransfer() throws InvalidTransferException {
+        Beneficio from = new Beneficio(1L, "Beneficio A", "Descrição A", BigDecimal.valueOf(100));
+        Beneficio to = new Beneficio(2L, "Beneficio B", "Descrição B", BigDecimal.valueOf(500));
+        when(em.find(Beneficio.class, from.getId(), LockModeType.OPTIMISTIC)).thenReturn(from);
+        when(em.find(Beneficio.class, to.getId(), LockModeType.OPTIMISTIC)).thenReturn(to);
+
+        Assertions.assertThrows(InvalidTransferException.class, () -> service.transfer(from.getId(), to.getId(), BigDecimal.valueOf(200)));
+        Assertions.assertThrows(InvalidTransferException.class, () -> service.transfer(from.getId(), to.getId(), BigDecimal.valueOf(101)));
+    }
+
+    @Test
     public void successTransfer() throws InvalidTransferException {
         Beneficio from = new Beneficio(1L, "Beneficio A", "Descrição A", BigDecimal.valueOf(1000));
         Beneficio to = new Beneficio(2L, "Beneficio B", "Descrição B", BigDecimal.valueOf(500));
@@ -51,6 +62,19 @@ public class BeneficioEjbServiceTest {
         service.transfer(from.getId(), to.getId(), BigDecimal.valueOf(200));
 
         assertEquals(800.00, from.getValor().doubleValue(), 0.01);
+        assertEquals(700.00, to.getValor().doubleValue(), 0.01);
+    }
+
+    @Test
+    public void successTransferExactlyAmount() throws InvalidTransferException {
+        Beneficio from = new Beneficio(1L, "Beneficio A", "Descrição A", BigDecimal.valueOf(200));
+        Beneficio to = new Beneficio(2L, "Beneficio B", "Descrição B", BigDecimal.valueOf(500));
+        when(em.find(Beneficio.class, from.getId(), LockModeType.OPTIMISTIC)).thenReturn(from);
+        when(em.find(Beneficio.class, to.getId(), LockModeType.OPTIMISTIC)).thenReturn(to);
+
+        service.transfer(from.getId(), to.getId(), BigDecimal.valueOf(200));
+
+        assertEquals(0.00, from.getValor().doubleValue(), 0.01);
         assertEquals(700.00, to.getValor().doubleValue(), 0.01);
     }
 }
