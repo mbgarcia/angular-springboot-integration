@@ -1,22 +1,29 @@
 package com.example.backend.to;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
+@Schema(description = "Objeto de apresentação da conta de benefício")
 public class BeneficioTo {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Schema(description = "Id da conta")
     private Long id;
 
     @NotNull
+    @Schema(description = "Nome do cliente", example = "Maria de Nazaré")
     private String nome;
 
+    @Schema(description = "Descrição para algum detalhe", example = "Conta de pessoa física")
     private String descricao;
 
+    @Schema(description = "Saldo em conta")
     private BigDecimal valor;
 
+    @Schema(description = "Se conta está ativa")
     private Boolean ativo;
 
     public BeneficioTo() {
