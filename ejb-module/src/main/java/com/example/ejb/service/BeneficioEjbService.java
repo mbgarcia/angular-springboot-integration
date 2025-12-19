@@ -31,7 +31,7 @@ public class BeneficioEjbService {
 
     @Transactional
     public void criarOuAtualizar(Beneficio e) {
-        em.persist(e);
+        em.merge(e);
     }
 
     public List<Beneficio> listAllBeneficios(){

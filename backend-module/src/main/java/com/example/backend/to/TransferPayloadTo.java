@@ -21,7 +21,7 @@ public class TransferPayloadTo {
 
     @NotNull
     @DecimalMin(value = "0.01", inclusive = true)
-    @Schema(description = "Valor da tarnsação", example = "2")
+    @Schema(description = "Valor da transação", example = "2")
     private BigDecimal valor;
 
     public Long getFromId() {
