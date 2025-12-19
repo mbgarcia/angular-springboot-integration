@@ -16,7 +16,7 @@ import java.util.Optional;
 @Stateless
 public class BeneficioEjbService {
     private static final String ERROR_CODE_INPUT_DATA = "Dados obrigatórios inválidos";
-    private static final String ERROR_CODE_INVALID_ACCOUNTS = "Contas inválidas.";
+    private static final String ERROR_CODE_INVALID_ACCOUNT = "Conta inválida.";
     private static final String ERROR_CODE_AMOUNT_NOT_POSITIVE = "Valor inválido para ser transferido";
     private static final String ERROR_CODE_INVALID_DESTINATION = "Informe contas diferentes na transação";
     private static final String ERROR_CODE_AMOUNT_NEGATIVATES_ACCOUNT = "Valor a ser transferido é superior ao saldo";
@@ -26,7 +26,7 @@ public class BeneficioEjbService {
 
     @Transactional
     public Optional<Beneficio> findById(Long id) {
-        return Optional.of(em.find(Beneficio.class, id, LockModeType.OPTIMISTIC));
+        return Optional.ofNullable(em.find(Beneficio.class, id, LockModeType.OPTIMISTIC));
     }
 
     @Transactional
@@ -58,7 +58,7 @@ public class BeneficioEjbService {
         Beneficio to   = em.find(Beneficio.class, toId, LockModeType.OPTIMISTIC);
 
         if (from == null || to == null) {
-            throw new InvalidTransferException(ERROR_CODE_INVALID_ACCOUNTS);
+            throw new InvalidTransferException(ERROR_CODE_INVALID_ACCOUNT);
         }
 
         if (from.getValor().compareTo(amount) < 0) {
