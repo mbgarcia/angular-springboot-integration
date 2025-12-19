@@ -1,5 +1,6 @@
 package com.example.backend.to;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Schema(description = "Objeto de entrada para a operação de transferência")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TransferPayloadTo {
     @NotNull
     @Schema(description = "Id da conta de origem", example = "1")

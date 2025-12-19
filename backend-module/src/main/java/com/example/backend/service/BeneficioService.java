@@ -14,6 +14,8 @@ import java.util.Optional;
 
 @Service
 public class BeneficioService {
+    private static final String ERROR_CODE_INVALID_ACCOUNT = "Conta inválida.";
+
     @Autowired
     BeneficioEjbService ejbService;
 
@@ -59,18 +61,17 @@ public class BeneficioService {
         return to;
     }
 
-    public void update(Long id, BeneficioTo to) {
+    public void update(Long id, BeneficioTo to) throws BusinessException {
         Optional<Beneficio> optional = ejbService.findById(id);
 
-        if (optional.isPresent()) {
-            Beneficio b = optional.get();
-            b.setNome(to.getNome());
-            b.setDescricao(to.getDescricao());
-            b.setValor(to.getValor());
-            b.setAtivo(to.getAtivo());
+        Beneficio b = optional.orElseThrow(() -> new BusinessException(ERROR_CODE_INVALID_ACCOUNT));
 
-            ejbService.criarOuAtualizar(b);
-        }
+        b.setNome(to.getNome());
+        b.setDescricao(to.getDescricao());
+        b.setValor(to.getValor());
+        b.setAtivo(to.getAtivo());
+
+        ejbService.criarOuAtualizar(b);
     }
 
     public void delete(Long id) {

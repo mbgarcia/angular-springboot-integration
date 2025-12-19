@@ -4,7 +4,6 @@ import com.example.backend.exception.BusinessException;
 import com.example.backend.service.BeneficioService;
 import com.example.backend.to.BeneficioTo;
 import com.example.backend.to.TransferPayloadTo;
-import com.example.backend.to.TransferResultTo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -58,10 +57,12 @@ public class BeneficioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Operação realizada com sucesso",
                     content = @Content()),
+            @ApiResponse(responseCode = "422", description = "Erro de negócio",
+                    content = @Content(schema = @Schema(defaultValue = "{\"status\": \"422\", \"message\": \"Conta inválida\"}"))), // Empty content for 404
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    public void update(@PathVariable Long id, @Valid @RequestBody BeneficioTo payload) {
+    public void update(@PathVariable Long id, @Valid @RequestBody BeneficioTo payload) throws BusinessException {
         service.update(id, payload);
     }
 
