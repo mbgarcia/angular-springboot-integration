@@ -21,13 +21,11 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Bad Request");
+        body.put("error", HttpStatus.BAD_REQUEST.name());
         
         List<String> errors = new ArrayList<>();
         
@@ -44,7 +42,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Bad Request");
+        body.put("error", HttpStatus.BAD_REQUEST.name());
         
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
@@ -71,6 +69,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleBusinessException(BusinessException e) {
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
+        body.put("error", HttpStatus.UNPROCESSABLE_ENTITY.name());
         body.put("message", e.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -80,14 +79,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException e) {
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.NOT_FOUND.value());
-        body.put("error", "endpoint inexistente");
+        body.put("error", HttpStatus.NOT_FOUND.name());
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Throwable.class) 
     public ResponseEntity<Object> handleException(Throwable e) {
-    	LOGGER.error("Generic error...", e);
     	Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put("error", HttpStatus.INTERNAL_SERVER_ERROR.name());
