@@ -3,7 +3,6 @@ package com.example.backend.service;
 import com.example.backend.exception.BusinessException;
 import com.example.backend.to.BeneficioTo;
 import com.example.backend.to.TransferPayloadTo;
-import com.example.backend.to.TransferResultTo;
 import com.example.ejb.exception.InvalidTransferException;
 import com.example.ejb.model.Beneficio;
 import com.example.ejb.service.BeneficioEjbService;
@@ -18,13 +17,9 @@ public class BeneficioService {
     @Autowired
     BeneficioEjbService ejbService;
 
-    public TransferResultTo transfer(TransferPayloadTo payload) throws BusinessException {
+    public void transfer(TransferPayloadTo payload) throws BusinessException {
         try{
             ejbService.transfer(payload.getFromId(), payload.getToId(), payload.getValor());
-            TransferResultTo resultTo = new TransferResultTo();
-            resultTo.setStatus("OK");
-            resultTo.setMessagem("Transferencia realizada com sucesso");
-            return resultTo;
         } catch (InvalidTransferException e) {
             throw new BusinessException(e.getMessage());
         }

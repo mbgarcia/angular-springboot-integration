@@ -79,18 +79,18 @@ public class BeneficioController {
     }
 
     @PostMapping("/transfer/")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @Operation(summary = "Transferência de saldo entre contas")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Transferência realizada com sucesso",
-                    content = @Content(schema = @Schema(implementation = TransferResultTo.class))),
+            @ApiResponse(responseCode = "201", description = "Transferência realizada com sucesso",
+                    content = @Content()),
             @ApiResponse(responseCode = "422", description = "Erro de negócio",
                     content = @Content(schema = @Schema(defaultValue = "{\"status\": \"422\", \"message\": \"Valor a ser transferido é superior ao saldo\"}"))), // Empty content for 404
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    public TransferResultTo transfer(
+    public void transfer(
             @Valid @RequestBody TransferPayloadTo payload) throws BusinessException {
-        return service.transfer(payload);
+        service.transfer(payload);
     }
 }
