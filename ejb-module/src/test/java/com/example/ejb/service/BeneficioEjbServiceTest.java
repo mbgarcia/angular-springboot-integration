@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,6 +40,14 @@ public class BeneficioEjbServiceTest {
     @Test
     public void invalidDestination() throws InvalidTransferException {
         Assertions.assertThrows(InvalidTransferException.class, () -> service.transfer(1L, 1L, BigDecimal.valueOf(1)));
+    }
+
+    @Test
+    public void invalidAccounts() throws InvalidTransferException {
+        when(em.find(Beneficio.class, 1L, LockModeType.OPTIMISTIC)).thenReturn(null);
+        when(em.find(Beneficio.class, 2L, LockModeType.OPTIMISTIC)).thenReturn(null);
+
+        Assertions.assertThrows(InvalidTransferException.class, () -> service.transfer(1L, 2L, BigDecimal.valueOf(200)));
     }
 
     @Test
