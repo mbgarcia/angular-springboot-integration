@@ -75,7 +75,7 @@ public class BeneficioController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) throws BusinessException {
         service.delete(id);
     }
 

@@ -74,14 +74,13 @@ public class BeneficioService {
         ejbService.criarOuAtualizar(b);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id) throws BusinessException {
         Optional<Beneficio> optional = ejbService.findById(id);
 
-        if (optional.isPresent()) {
-            Beneficio b = optional.get();
-            b.setAtivo(Boolean.FALSE);
+        Beneficio b = optional.orElseThrow(() -> new BusinessException(ERROR_CODE_INVALID_ACCOUNT));
 
-            ejbService.criarOuAtualizar(b);
-        }
+        b.setAtivo(Boolean.FALSE);
+
+        ejbService.criarOuAtualizar(b);
     }
 }
