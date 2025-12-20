@@ -1,7 +1,6 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup,  ReactiveFormsModule, Validators} from '@angular/forms';
-import { BenefitService } from '../services/benefit.service';
+import { FormControl, FormGroup,  ReactiveFormsModule, Validators} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -9,6 +8,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BenefitAccount } from '../models/benefit-account';
+import { BenefitService } from '../services/benefit.service';
+import { NotificationService } from '../services/notification.service';
+
 
 @Component({
   selector: 'app-benefit-crud',
@@ -23,7 +25,9 @@ import { BenefitAccount } from '../models/benefit-account';
   styleUrl: './benefit-crud.component.css'
 })
 export class BenefitCrudComponent {
-  benefitService: BenefitService = inject(BenefitService);
+  private benefitService: BenefitService = inject(BenefitService);
+  private notificationService: NotificationService = inject(NotificationService);
+
   router = inject(Router);
   snackBar = inject(MatSnackBar);
   route = inject(ActivatedRoute);
@@ -48,15 +52,20 @@ export class BenefitCrudComponent {
         this.benefitId = +id;
 
         effect(() => {
-          this.benefitService.getBenefitById(this.benefitId).subscribe(benefit => {
-            this.benefitForm.setValue({
-              nome: benefit.nome,
-              descricao: benefit.descricao,
-              valor: benefit.valor,
-              ativo: benefit.ativo
-            });
-            this.benefitId = benefit.id;
-            this.submitAction.set('Atualizar Conta');
+          this.benefitService.getBenefitById(this.benefitId).subscribe({
+            next: (benefit: BenefitAccount) => {
+              this.benefitForm.setValue({
+                nome: benefit.nome,
+                descricao: benefit.descricao,
+                valor: benefit.valor,
+                ativo: benefit.ativo
+              });
+
+              this.benefitId = benefit.id;
+              this.submitAction.set('Atualizar Conta');
+
+              console.log('Fetched benefit by ID:', benefit);
+            }
           });
         });
       }
@@ -65,10 +74,7 @@ export class BenefitCrudComponent {
 
   async submitBenefit() {
     if (this.benefitForm.invalid) {
-      this.snackBar.open('Por favor, preencha todos os campos obrigatórios corretamente.', 'Fechar', {
-        duration: 3000,
-        verticalPosition: 'top',
-      });
+      this.notificationService.showMessage('Por favor, preencha todos os campos obrigatórios corretamente.');
       return;
     }
 
@@ -77,37 +83,18 @@ export class BenefitCrudComponent {
     if (this.isEditMode && this.benefitId) {
       this.benefitService.updateBenefit(this.benefitId, payload).subscribe({
         next: () => {
-          this.snackBar.open('Conta atualizada com sucesso!', 'Fechar', {
-            duration: 3000,
-            verticalPosition: 'top',
-          });
-          this.router.navigate(['/dashboard']);
-        },
-        error: (error) => {
-          console.error('Error updating benefit:', error);
-          this.snackBar.open('Erro ao atualizar conta de benefício.', 'Fechar', {
-            duration: 3000,
-            verticalPosition: 'top',
-          });
+          this.notificationService.showMessage('Conta atualizada com sucesso!');
         }
       });
     } else {
-      this.benefitService.addBenefit(payload).subscribe({
+      this.benefitService.addBenefit(payload)    .subscribe({
         next: () => {
-          this.snackBar.open('Nova conta criada com sucesso!', 'Fechar', {
-            duration: 3000,
-            verticalPosition: 'top',
-          });
-          this.router.navigate(['/dashboard']);
-        },
-        error: (error) => {
-          console.error('Error creating benefit:', error);
-          this.snackBar.open('Erro ao criar conta.', 'Fechar', {
-            duration: 3000,
-            verticalPosition: 'top',
-          });
+          this.notificationService.showMessage('Nova conta criada com sucesso!');
         }
-      });
-    }    
+    });
+
+    }
+    
+    this.router.navigate(['/dashboard']);
   }
 }
