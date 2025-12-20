@@ -1,7 +1,6 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup,  ReactiveFormsModule, Validators} from '@angular/forms';
-import { BenefitService } from '../services/benefit.service';
+import { FormControl, FormGroup,  ReactiveFormsModule, Validators} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -10,7 +9,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { BenefitAccount } from '../models/benefit-account';
 import { MatSelectModule } from '@angular/material/select';
 import { TransferOperation } from '../models/transfer-operation';
-import { HttpErrorResponse } from '@angular/common/http';
+import { BenefitService } from '../services/benefit.service';
+import { NotificationService } from '../services/notification.service';
+
 
 @Component({
   selector: 'app-transfer',
@@ -25,7 +26,10 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './transfer.component.css'
 })
 export class TransferComponent {
-  benefitService: BenefitService = inject(BenefitService);
+  private benefitService = inject(BenefitService);
+  private notificationService = inject(NotificationService);
+  accounts = signal<BenefitAccount[]>([]);
+
   router = inject(Router);
   snackBar = inject(MatSnackBar);
   route = inject(ActivatedRoute);
@@ -36,21 +40,18 @@ export class TransferComponent {
     valor: new FormControl(0, {validators: [Validators.required, Validators.min(0.01)], nonNullable: true}),
   });
 
-  accounts : BenefitAccount[] = [];
 
   constructor() {
-    this.benefitService.loadBenefits();
-    effect(() => {
-      this.accounts = this.benefitService.benefits();
+    this.benefitService.loadBenefits().subscribe({
+      next: (e) => {
+        this.accounts.set(e);
+      }
     });
   }
   
   submitTransfer() {
     if (this.transferForm.invalid) {
-      this.snackBar.open('Por favor, preencha todos os campos obrigatórios corretamente.', 'Fechar', {
-        duration: 3000,
-        verticalPosition: 'top',
-      });
+      this.notificationService.showMessage('Por favor, preencha todos os campos obrigatórios corretamente.');
       return;
     }
 
@@ -58,25 +59,10 @@ export class TransferComponent {
 
     this.benefitService.transferBetweenAccounts(payload).subscribe({
       next: () => {
-        this.snackBar.open('Transferência realizada com sucesso!', 'Fechar', {
-          duration: 3000,
-          verticalPosition: 'top',
-        });
+        this.notificationService.showMessage('Transferência realizada com sucesso!');
+
         this.router.navigate(['/dashboard']);
-      },
-      error: (e: HttpErrorResponse) => {
-        let message = "Erro ao transferir valor.";
-
-        if (422 === e.status) {
-          message = e.error['message'];
-        }
-
-        this.snackBar.open(message, 'Fechar', {
-          duration: 3000,
-          verticalPosition: 'top',
-        });
       }
     });
-
   }
 }

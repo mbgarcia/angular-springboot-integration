@@ -9,7 +9,7 @@
                     <mat-form-field>
                     <mat-label>Conta origem</mat-label>
                     <mat-select formControlName="fromId" required>
-                        @for (account of accounts; track account) {
+                        @for (account of accounts(); track account) {
                             <mat-option [value]="account.id">{{account.nome}}</mat-option>
                         }
                     </mat-select>
@@ -20,7 +20,7 @@
                     <mat-form-field>
                     <mat-label>Conta destino</mat-label>
                     <mat-select formControlName="toId" required>
-                        @for (account of accounts; track account) {
+                        @for (account of accounts(); track account) {
                             <mat-option [value]="account.id">{{account.nome}}</mat-option>
                         }
                     </mat-select>

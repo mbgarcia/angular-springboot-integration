@@ -1,26 +1,25 @@
-import { Component, effect, inject, ViewChild } from '@angular/core';
+import { Component, effect, inject, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { BenefitService } from '../services/benefit.service';
 import { BenefitAccount } from '../models/benefit-account';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
-
+import { Router } from '@angular/router';
+import { BenefitService } from '../services/benefit.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-dashboard',
   imports: [MatTableModule,
     CommonModule, 
     MatPaginatorModule,
-    MatSnackBarModule,
     MatButtonModule,
     MatSlideToggleModule,
     MatSortModule,
@@ -31,8 +30,10 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  benefitService = inject(BenefitService);
-  snackBar = inject(MatSnackBar);
+  private benefitService = inject(BenefitService);
+  private router = inject(Router);
+  private benefits = signal<BenefitAccount[]>([]);
+  private notificationService = inject(NotificationService);
 
   displayedColumns: string[] = ['id', 'nome', 'descricao', 'valor', 'ativo', 'actions'];
 
@@ -50,16 +51,16 @@ export class DashboardComponent {
     this.dataSource.paginator = this.paginator;
   }
 
-  benefits = this.benefitService.benefits;
-
   constructor(public dialog: MatDialog) {
-    this.benefitService.loadBenefits();
+    const benefits = this.benefitService.loadBenefits().subscribe({
+      next: (e) => {
+        this.benefits.set(e);
+      }
+    });
 
     effect(() => {
-      const benefits = this.benefits();
-
-      this.dataSource.data = benefits;
-      this.totalItems = benefits.length;
+      this.dataSource.data = this.benefits();
+      this.totalItems = this.benefits().length;
     });
   }
 
@@ -82,20 +83,10 @@ export class DashboardComponent {
       if (result) {
         this.benefitService.deleteBenefit(item.id).subscribe({
           next: () => {
-            this.snackBar.open('Conta inativada com sucesso!', 'Fechar', {
-              duration: 3000,
-              verticalPosition: 'top',
-            });
-          },
-          error: (error) => {
-            this.snackBar.open('Erro ao inativar conta.', 'Fechar', {
-              duration: 3000,
-              verticalPosition: 'top',
-            });
+            this.notificationService.showMessage('Conta inativada com sucesso!');
+            item.ativo = false;
           }
         });
-
-        item.ativo = false;
       }
     });  
   }

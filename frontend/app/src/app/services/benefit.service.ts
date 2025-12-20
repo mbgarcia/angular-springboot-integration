@@ -1,28 +1,22 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { BenefitAccount } from '../models/benefit-account';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { TransferOperation } from '../models/transfer-operation';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BenefitService {
-  private benefitsSignal = signal<BenefitAccount[]>([]);
+  private snackBar = inject(MatSnackBar);
 
   url = environment.backendUrl;
 
   constructor(private http: HttpClient) { }
 
   loadBenefits() {
-    this.http.get<BenefitAccount[]>(`${this.url}/`)
-      .subscribe(benefits => {
-        this.benefitsSignal.set(benefits);
-      });
-  }
-
-  get benefits() {
-    return this.benefitsSignal;
+    return this.http.get<BenefitAccount[]>(`${this.url}/`);
   }
 
   addBenefit(benefit: BenefitAccount) {
@@ -38,7 +32,7 @@ export class BenefitService {
   }
 
   getBenefitById(id: number) {
-    return this.http.get<BenefitAccount>(`${this.url}/${id}`);
+    return this.http.get<BenefitAccount>(`${this.url}/${id}`)
   }
 
   transferBetweenAccounts(transfer: TransferOperation) {
