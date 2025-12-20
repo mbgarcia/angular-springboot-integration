@@ -44,19 +44,17 @@ public class BeneficioService {
         ejbService.criarOuAtualizar(novo);
     }
 
-    public BeneficioTo findById(Long id) {
+    public BeneficioTo findById(Long id) throws BusinessException {
         Optional<Beneficio> optional = ejbService.findById(id);
 
-        BeneficioTo to = new BeneficioTo();
+        Beneficio b = optional.orElseThrow(() -> new BusinessException(ERROR_CODE_INVALID_ACCOUNT));
 
-        if (optional.isPresent()) {
-            Beneficio b = optional.get();
-            to.setId(b.getId());
-            to.setAtivo(b.getAtivo());
-            to.setDescricao(b.getDescricao());
-            to.setNome(b.getNome());
-            to.setValor(b.getValor());
-        }
+        BeneficioTo to = new BeneficioTo();
+        to.setId(b.getId());
+        to.setAtivo(b.getAtivo());
+        to.setDescricao(b.getDescricao());
+        to.setNome(b.getNome());
+        to.setValor(b.getValor());
 
         return to;
     }

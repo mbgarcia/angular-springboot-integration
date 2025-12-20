@@ -34,7 +34,7 @@ public class BeneficioController {
     @Operation(summary = "Consulta uma conta de benefício pelo id")
     public BeneficioTo findById(
             @Parameter(description = "Id da conta", example = "1")
-            @PathVariable Long id) {
+            @PathVariable Long id) throws BusinessException {
         return service.findById(id);
     }
 
